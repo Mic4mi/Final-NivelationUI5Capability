@@ -115,6 +115,5 @@ sap.ui.define([
                 this.byId(this.constants.ids.creationPopUpDialog).close();
             }
 
-
         });
     });

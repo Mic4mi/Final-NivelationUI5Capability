@@ -53,7 +53,7 @@
                     <items>
                         <CustomListItem type="Navigation" press="onSelectionChange">
                             <HBox>
-                                <CheckBox press="onHandleCheck" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>                            
+                                <CheckBox press="onHandleCheck" class="sapUiTinyMarginTop sapUiSmallMarginBegin"/>                            
                                 <VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
                                     <Title text="{path: 'ListOfNotesModel>title'}" titleStyle="H3"/>
                                     <ObjectStatus

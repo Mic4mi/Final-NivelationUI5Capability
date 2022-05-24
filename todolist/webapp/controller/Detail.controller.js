@@ -47,7 +47,7 @@ sap.ui.define([
                         MessageToast.show(`${that.getTextFor("errorWhenNavigatingtoItem")}: ${oError}`);
                     });
 
-                this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
+                this.getModel(this.constants.paths.appView).setProperty("/layout", "TwoColumnsMidExpanded");
                 this._bindView("/" + this.currentObjectPath);
             },
 
@@ -101,15 +101,15 @@ sap.ui.define([
              * Event that handles the button that zooms the detail view
              */
             toggleFullScreen: function () {
-                let bFullScreen = this.getModel("appView").getProperty("/actionButtonsInfo/midColumn/fullScreen");
-                this.getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen", !bFullScreen);
+                let bFullScreen = this.getModel(this.constants.paths.appView).getProperty("/actionButtonsInfo/midColumn/fullScreen");
+                this.getModel(this.constants.paths.appView).setProperty("/actionButtonsInfo/midColumn/fullScreen", !bFullScreen);
                 if (!bFullScreen) {
                     // store current layout and go full screen
-                    this.getModel("appView").setProperty("/previousLayout", this.getModel("appView").getProperty("/layout"));
-                    this.getModel("appView").setProperty("/layout", "MidColumnFullScreen");
+                    this.getModel(this.constants.paths.appView).setProperty("/previousLayout", this.getModel(this.constants.paths.appView).getProperty("/layout"));
+                    this.getModel(this.constants.paths.appView).setProperty("/layout", "MidColumnFullScreen");
                 } else {
                     // reset to previous layout
-                    this.getModel("appView").setProperty("/layout", this.getModel("appView").getProperty("/previousLayout"));
+                    this.getModel(this.constants.paths.appView).setProperty("/layout", this.getModel(this.constants.paths.appView).getProperty("/previousLayout"));
                 }
             },
 
@@ -117,7 +117,7 @@ sap.ui.define([
              * Event handling for the closing of the detail view
              */
             onCloseDetailPress: function () {
-                this.getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen", false);
+                this.getModel(this.constants.paths.appView).setProperty("/actionButtonsInfo/midColumn/fullScreen", false);
                 // No item should be selected on master after detail page is closed
                 this.getOwnerComponent().oListSelector.clearMasterListSelection();
                 this.getRouter().navTo("master");
