@@ -1,5 +1,18 @@
 {
-  "authenticationMethod": "none",
-  "routes": [],
-  "welcomeFile": "/acctodolist"
+    "authenticationMethod": "none",
+    "routes": [
+        {
+            "source": "^/resources/(.*)$",
+            "target": "/resources/$1",
+            "authenticationType": "none",
+            "destination": "ui5"
+        },
+        {
+            "source": "^(.*)$",
+            "target": "$1",
+            "service": "html5-apps-repo-rt",
+            "authenticationType": "xsuaa"
+        }
+    ],
+    "welcomeFile": "/acctodolist"
 }
