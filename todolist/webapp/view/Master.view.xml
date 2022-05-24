@@ -38,7 +38,7 @@
                                 showSearchButton="false" 
                                 showRefreshButton="false" 
                                 placeholder="{i18n>search}" 
-                                search="onSearch" 
+                                liveChange="onSearch" 
                                 width="auto"
                                 class="sapUiSmallMarginBegin">
                                 <layoutData>
@@ -53,7 +53,7 @@
                     <items>
                         <CustomListItem type="Navigation" press="onSelectionChange">
                             <HBox>
-                                <CheckBox press="onHandleCheck" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>                            
+                                <CheckBox select="onHandleCheck" selected="{ListOfNotesModel>completed}" class="sapUiTinyMarginTop sapUiSmallMarginBegin"/>                            
                                 <VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
                                     <Title text="{path: 'ListOfNotesModel>title'}" titleStyle="H3"/>
                                     <ObjectStatus

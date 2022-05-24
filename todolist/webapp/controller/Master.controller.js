@@ -2,12 +2,25 @@ sap.ui.define([
     "acc/todolist/controller/BaseController",
     "sap/ui/model/json/JSONModel",
     "sap/ui/Device",
-
+    "sap/m/MessageBox",
+    "sap/m/MessageToast",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+    "sap/ui/model/Sorter",
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Device) {
+    function (
+        Controller,
+        JSONModel,
+        Device,
+        MessageBox,
+        MessageToast,
+        Filter,
+        FilterOperator,
+        Sorter
+    ) {
         "use strict";
 
         return Controller.extend("acc.todolist.controller.Master", {
@@ -36,7 +49,8 @@ sap.ui.define([
                 title: null,
                 date: null,
                 text: null,
-                type_ID: null
+                type_ID: null,
+                completed: false
             },
 
             /**
@@ -109,12 +123,128 @@ sap.ui.define([
             },
 
             /**
+             * Event handles por Creation
+             */
+            handleCreationPopUpSubmit: function () {
+                let msg,
+                    sMessageBoxType = "confirm",
+                    sMessage = this.getTextFor("doYouWishToAddANewItem");
+                MessageBox[sMessageBoxType](sMessage, {
+                    actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+                    onClose: function (oAction) {
+                        if (oAction === MessageBox.Action.YES) {
+                            let oValidator = this.validator.dataValidationOnSubmit(this);
+                            if (oValidator.success) {
+                                let oNewItem = this.getView().getModel(this.constants.paths.creationModel).getData();
+                                oNewItem.date = new Date();
+                                oNewItem.completed = false;
+                                this.getOdataService().create(this.constants.paths.mainEntity, oNewItem)
+                                    .then(oResponse => {
+                                        msg = oValidator.message;
+                                        MessageToast.show(msg);
+                                    })
+                                    .catch(oError => {
+                                        MessageToast.show(`${this.getTextFor("failedToCreateNewItem")}: ${oError}`);
+                                    })
+                                let oEmptyModel = new JSONModel(this._oCreationData);
+                                this.getView().setModel(oEmptyModel, this.constants.paths.creationModel);
+                                this.byId(this.constants.ids.creationPopUpDialog).close();
+                            } else {
+                                msg = oValidator.message;
+                                MessageToast.show(msg);
+                            }
+                        }
+                    }.bind(this)
+                });
+
+            },
+
+            /**
              * Handle cancel creation
              */
             handleCreationPopUpCancel: function () {
+                let inpClave1 = this.getView().byId(this.constants.ids.input),
+                    inpClave2 = this.getView().byId(this.constants.ids.textArea),
+                    inpClave3 = this.getView().byId(this.constants.ids.slType),
+                    oEmptyModel = new JSONModel(this._oCreationData);
+                inpClave1.setValue("");
+                inpClave2.setValue("");
+                inpClave3.setSelectedKey(null);
+                inpClave1.setValueState("None");
+                inpClave2.setValueState("None");
+                inpClave3.setValueState("None");
+                this.getView().setModel(oEmptyModel, this.constants.paths.creationModel);
                 this.byId(this.constants.ids.creationPopUpDialog).close();
-            }
+            },
 
+            /**
+             * Handles task status change
+             * @param {*} oEvent 
+             */
+            onHandleCheck: function (oEvent) {
+                let bSelected = oEvent.getSource().getSelected(),
+                    sPath = oEvent.getSource().getParent().getParent().getBindingContextPath(),
+                    oChangedItem = {
+                        completed: bSelected
+                    };
+                this.getOdataService().update(sPath, oChangedItem)
+                    .then(oResponse => {
+                        MessageToast.show(this.getTextFor("statusItemProperlyEdited"));
+                    })
+                    .catch(oError => {
+                        console.log(`${this.getTextFor("statusItemCanNtotBeEdited")}: ${oError}`);
+                    })
+                    .finally(() => {
+                        this.oDataModel.refresh();
+                    })
+            },
+
+            /**
+             * Event Handler for searchfield
+             * @param {Event} oEvent 
+             */
+            onSearch: function (oEvent) {
+                let sQuery = oEvent.getSource().getValue(),
+                    oTable = this.byId(this.constants.ids.masterList),
+                    oBinding = oTable.getBinding("items"),
+                    oSearchFilter;
+
+                if (sQuery) {
+                    oSearchFilter = new Filter([
+                        new Filter(this.constants.filterFields.title, FilterOperator.Contains, sQuery),
+                        new Filter(this.constants.filterFields.text, FilterOperator.Contains, sQuery)
+                    ], false);
+                } else {
+                    oSearchFilter = null;
+                }
+
+                oBinding.filter(oSearchFilter, "Application");
+            },
+
+            /**
+             * Opens the settings popup for sorting
+             */
+            onOpenSortPopup: function name() {
+                this.openSettingDialog(this.byId(this.constants.ids.sortDialog), this.constants.fragments.sort);
+            },
+
+            /**
+             * Event handler for sorting 
+             * @param {Event} oEvent 
+             */
+            onSortListConfirm: function (oEvent) {
+                let oMParams = oEvent.getParameters(),
+                    oTable = this.byId(this.constants.ids.masterList),
+                    oBinding = oTable.getBinding("items"),
+                    sPath,
+                    oSorter,
+                    bDescending;
+
+                sPath = oMParams.sortItem.getKey();
+                bDescending = oMParams.sortDescending;
+                oSorter = new Sorter(sPath, bDescending);
+                oBinding.sort(oSorter);
+            }
 
         });
     });

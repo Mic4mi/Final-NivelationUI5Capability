@@ -8,6 +8,7 @@ sap.ui.define(
         "sap/ui/core/Fragment",
         "acc/todolist/utils/Formatter",
         "acc/todolist/utils/Constants",
+        "acc/todolist/utils/Validator",
         "acc/todolist/utils/OdataService"
     ],
     function (
@@ -19,6 +20,7 @@ sap.ui.define(
         Fragment,
         Formatter,
         Constants,
+        Validator,
         OdataService
     ) {
         "use strict";
@@ -26,6 +28,7 @@ sap.ui.define(
         return Controller.extend("acc.todolist.controller.BaseController", {
             formatter: Formatter,
             constants: Constants,
+            validator: Validator,
             _mViewSettingsDialogs: {},
 
             /**
