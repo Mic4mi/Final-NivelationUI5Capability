@@ -1,0 +1,115 @@
+<mvc:View
+	controllerName="acc.todolist.controller.Detail"
+    xmlns="sap.m"
+	xmlns:semantic="sap.f.semantic"
+	xmlns:layout="sap.ui.layout"
+	xmlns:forms="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+>
+
+<semantic:SemanticPage
+		id="detail"
+		busy="{detailView>/busy}"
+		busyIndicatorDelay="{detailView>/delay}"
+		showFooter="false">
+		<semantic:titleHeading>
+			<Title
+				id="idTitlePadron"
+				text="{DetailModel>/title}"
+				level="H2"/>
+		</semantic:titleHeading>
+		<semantic:headerContent>
+            <layout:HorizontalLayout allowWrapping="true">
+                    <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute id="dateDetail" title="{i18n>date}" text="{
+                            path: 'DetailModel>/date',
+                            formatter: '.formatter.formatDate'
+                        }"/>
+				</layout:VerticalLayout>
+			</layout:HorizontalLayout>    
+		</semantic:headerContent>
+		<semantic:content>
+			<forms:SimpleForm 
+                class="sapUiResponsiveMargin"
+                layout="ColumnLayout"
+                columnsM="1"
+				columnsL="1"
+				columnsXL="1"
+                singleContainerFullSize="false" >
+
+                <Label id="lbInputDetail" labelFor="inputDetail" required="false" text="{i18n>titleItem}"/>
+                <Input 
+                    id="inputDetail" 
+                    value="{DetailModel>/title}"
+                    width="17rem"
+                    editable="false" 
+                    enabled="false" 
+                    maxLength="30"/>
+							
+                <Label id="lbTextAreaDetail" labelFor="textAreaDetail" required="false" text="{i18n>text}"/>
+                <TextArea 
+                    id="textAreaDetail" 
+                    width="17rem" 
+                    value="{DetailModel>/text}" 
+                    editable="false" 
+                    enabled="false" 
+                    showExceededText="true" 
+                    rows="5"
+                    maxLength="120"/>
+                
+                <Label id="lbTypeDetail" labelFor="slTypeDetail" required="false" text="{i18n>type}"/>
+                <ComboBox
+                    id="slTypeDetail"
+                    showSecondaryValues="true"
+                    width="17rem"
+                    editable="false"
+                    enabled="false"
+                    selectedKey="{DetailModel>/type_ID}"
+                    items="{
+                        path: 'ListOfNotesModel>/Types'
+                    }">
+                    <core:ListItem key="{ListOfNotesModel>ID}" text="{ListOfNotesModel>description} - {ListOfNotesModel>ID}"/>
+                </ComboBox>                  
+                	
+			</forms:SimpleForm>
+		</semantic:content>
+
+		<semantic:closeAction>
+			<semantic:CloseAction
+					id="closeColumn"
+					press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction
+					id="enterFullScreen"
+					visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}"
+					press=".toggleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction
+					id="exitFullScreen"
+					visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
+					press=".toggleFullScreen"/>
+		</semantic:exitFullScreenAction>
+
+        <semantic:deleteAction>
+			<semantic:DeleteAction 
+				id="delete"
+				press=".onDeleteAction"/>
+		</semantic:deleteAction>
+
+		<semantic:editAction>
+			<semantic:EditAction 
+				id="edit"
+				press=".onEditAction"/>
+		</semantic:editAction>
+
+		<semantic:footerCustomActions>
+            <Button id="saveBtn" text="{i18n>DetailViewCustomActionSave}" press="handleSaveEdit"/>
+            <Button id = "cancelbtn" text="{i18n>DetailViewCustomActionCancel}" press="handleCancelEdit" />
+        </semantic:footerCustomActions>
+	</semantic:SemanticPage>
+
+</mvc:View>

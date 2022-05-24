@@ -1,0 +1,74 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+	xmlns:layout="sap.ui.layout">
+	<Dialog
+		id="creationPopUpDialog"
+		showHeader="false"
+		verticalScrolling="false"
+		contentHeight="50%"
+		contentWidth="55%">
+        <f:DynamicPage
+                    stickySubheaderProvider="CreationPopUp"
+                    toggleHeaderOnTitleClick="false"
+                    class="sapUiNoContentPadding"
+                    showFooter="true">
+                <f:title>
+                        <f:DynamicPageTitle>
+                                <f:heading>
+                                        <Title text="{i18n>CreationDialogTitle}"/>
+                                </f:heading>
+                        </f:DynamicPageTitle>
+                </f:title>
+                <f:content>
+                    <form:SimpleForm class="sapUiResponsiveMargin"
+                        layout="ColumnLayout"
+                        columnsM="1"
+                        columnsL="1"
+                        columnsXL="1"
+                        singleContainerFullSize="false"  >
+
+                        <Label id="lbInput" labelFor="input" required="false" text="{i18n>titleItem}"/>
+                        <Input 
+                            id="input" 
+                            value="{CreationModel>/title}"
+                            width="17rem"
+                            maxLength="30"/>
+                                    
+                        <Label id="lbTextArea" labelFor="textArea" required="false" text="{i18n>text}"/>
+                        <TextArea 
+                            id="textArea" 
+                            width="17rem" 
+                            value="{CreationModel>/text}" 
+                            showExceededText="true" 
+                            rows="5"
+                            maxLength="120"/>
+                        
+                        <Label id="lbType" labelFor="slType" required="false" text="{i18n>type}"/>
+                        <ComboBox
+                            id="slType"
+                            showSecondaryValues="true"
+                            width="17rem"
+                            selectedKey="{CreationModel>/type_ID}"
+                            items="{
+                                path: 'ListOfNotesModel>/Types'
+                            }">
+                            <core:ListItem key="{ListOfNotesModel>ID}" text="{ListOfNotesModel>description} - {ListOfNotesModel>ID}"/>
+                        </ComboBox>                  
+
+                    </form:SimpleForm>
+                </f:content>
+                <f:footer>
+                        <OverflowToolbar>
+                                <ToolbarSpacer/>
+                                <Button text="{i18n>CreationFooterSubmit}" type="Emphasized"  press="handleCreationPopUpSubmit" />
+                                <Button	text="{i18n>CreationFooterCancel}" type="Transparent" press="handleCreationPopUpCancel"/>
+                        </OverflowToolbar>
+                </f:footer>
+        </f:DynamicPage>
+    </Dialog>
+</core:FragmentDefinition>
+                    

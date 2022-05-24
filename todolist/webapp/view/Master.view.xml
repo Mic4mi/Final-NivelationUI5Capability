@@ -1,0 +1,75 @@
+<mvc:View 
+    controllerName="acc.todolist.controller.Master" 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns="sap.m" 
+    xmlns:c="sap.ui.core" 
+    xmlns:semantic="sap.f.semantic" 
+    displayBlock="true" 
+    height="100%" 
+    busyIndicatorDelay="0">
+
+        <semantic:SemanticPage 
+            id="master" 
+            preserveHeaderStateOnScroll="true" 
+            toggleHeaderOnTitleClick="false"
+            class="sapUiNoContentPadding">
+            <semantic:titleHeading>
+                <Title id="masterPageTitle" text="{i18n>title}" level="H2" />
+            </semantic:titleHeading>
+
+            <semantic:content>
+                <List 
+                    id="list" width="auto" class="sapFDynamicPageAlignContent" 
+                    items="{
+                            path: 'ListOfNotesModel>/Notes'
+                        }" 
+                    busyIndicatorDelay="{masterView>/delay}" noDataText="{masterView>/noDataText}" 
+                    mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" 
+                    growingScrollToLoad="true" updateFinished=".onUpdateFinished" selectionChange=".onSelectionChange">
+                    <infoToolbar>
+                        <Toolbar active="true" id="filterBar" visible="{masterView>/isFilterBarVisible}">
+                            <Title id="filterBarLabel" text="{masterView>/filterBarLabel}" level="H3" />
+                        </Toolbar>
+                    </infoToolbar>
+                    <headerToolbar>
+                        <OverflowToolbar id="myOvTb">
+                            <SearchField 
+                                id="searchField" 
+                                showSearchButton="false" 
+                                showRefreshButton="false" 
+                                placeholder="{i18n>search}" 
+                                search="onSearch" 
+                                width="auto"
+                                class="sapUiSmallMarginBegin">
+                                <layoutData>
+                                    <OverflowToolbarLayoutData minWidth="150px" maxWidth="240px" shrinkable="true" priority="NeverOverflow" />
+                                </layoutData>
+                            </SearchField>                        
+                            <ToolbarSpacer id="tbSpacer"/>
+                            <Button id="addButton" icon="sap-icon://add" tooltip="{i18n>addBtn}" type="Transparent" press=".onOpenCreatePopup" />
+                            <Button id="sortButton" icon="sap-icon://sort" tooltip="{i18n>sortBtn}" type="Transparent" press=".onOpenSortPopup" />
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <items>
+                        <CustomListItem type="Navigation" press="onSelectionChange">
+                            <HBox>
+                                <CheckBox press="onHandleCheck" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>                            
+                                <VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+                                    <Title text="{path: 'ListOfNotesModel>title'}" titleStyle="H3"/>
+                                    <ObjectStatus
+                                        class="sapUiSmallMarginTop sapUiTinyMarginBottom"
+                                        text="{
+                                                path: 'ListOfNotesModel>date',
+                                                formatter: '.formatter.formatDate'
+                                            }"
+                                        icon="sap-icon://date-time"
+                                        state="Indication08" />
+                                    <Text text="{path: 'ListOfNotesModel>text'}"/>
+                                </VBox>
+                            </HBox>
+                        </CustomListItem>
+                    </items>
+                </List>
+            </semantic:content>
+        </semantic:SemanticPage>
+</mvc:View>

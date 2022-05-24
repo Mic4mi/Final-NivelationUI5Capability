@@ -1,0 +1,26 @@
+<!-- <mvc:View controllerName="acc.todolist.controller.App"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content />
+    </Page>
+</mvc:View> -->
+
+ <mvc:View controllerName="acc.todolist.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+>
+    <Shell id="shell" appWidthLimited="false">
+        <App id="App" 
+            busy="{appView>/busy}"
+                busyIndicatorDelay="{appView>/delay}">
+            <f:FlexibleColumnLayout
+                    id="layout"
+                    layout="{appView>/layout}"
+                    backgroundDesign="Translucent">
+            </f:FlexibleColumnLayout>
+        </App>
+  </Shell>
+</mvc:View>
