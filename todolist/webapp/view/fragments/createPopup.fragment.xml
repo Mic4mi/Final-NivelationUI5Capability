@@ -67,7 +67,7 @@
                 <f:footer>
                         <OverflowToolbar>
                                 <ToolbarSpacer/>
-                                <Button text="{i18n>CreationFooterSubmit}" type="Emphasized"  press="handleCreationPopUpSubmit" />
+                                <Button text="{i18n>CreationFooterSubmit}" type="Emphasized"  press="handleCreation" />
                                 <Button	text="{i18n>CreationFooterCancel}" type="Transparent" press="handleCreationPopUpCancel"/>
                         </OverflowToolbar>
                 </f:footer>

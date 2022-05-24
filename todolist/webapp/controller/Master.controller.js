@@ -123,36 +123,16 @@ sap.ui.define([
             },
 
             /**
-             * Event handles por Creation
+             * Event handler for creation button
              */
-            handleCreationPopUpSubmit: function () {
-                let msg,
-                    sMessageBoxType = "confirm",
+            handleCreation: function () {
+                let sMessageBoxType = "confirm",
                     sMessage = this.getTextFor("doYouWishToAddANewItem");
                 MessageBox[sMessageBoxType](sMessage, {
                     actions: [MessageBox.Action.YES, MessageBox.Action.NO],
                     onClose: function (oAction) {
                         if (oAction === MessageBox.Action.YES) {
-                            let oValidator = this.validator.dataValidationOnSubmit(this);
-                            if (oValidator.success) {
-                                let oNewItem = this.getView().getModel(this.constants.paths.creationModel).getData();
-                                oNewItem.date = new Date();
-                                oNewItem.completed = false;
-                                this.getOdataService().create(this.constants.paths.mainEntity, oNewItem)
-                                    .then(oResponse => {
-                                        msg = oValidator.message;
-                                        MessageToast.show(msg);
-                                    })
-                                    .catch(oError => {
-                                        MessageToast.show(`${this.getTextFor("failedToCreateNewItem")}: ${oError}`);
-                                    })
-                                let oEmptyModel = new JSONModel(this._oCreationData);
-                                this.getView().setModel(oEmptyModel, this.constants.paths.creationModel);
-                                this.byId(this.constants.ids.creationPopUpDialog).close();
-                            } else {
-                                msg = oValidator.message;
-                                MessageToast.show(msg);
-                            }
+                            this.addNewItem();
                         }
                     }.bind(this)
                 });
@@ -160,21 +140,58 @@ sap.ui.define([
             },
 
             /**
+             * Adds a new element
+             */
+            addNewItem: function () {
+                let oValidator = this.validator.dataValidationOnSubmit(this),
+                    msg;
+                if (oValidator.success) {
+                    let oNewItem = this.getView().getModel(this.constants.paths.creationModel).getData();
+                    oNewItem.date = new Date();
+                    oNewItem.completed = false;
+                    this.getOdataService().create(this.constants.paths.mainEntity, oNewItem)
+                        .then(oResponse => {
+                            msg = oValidator.message;
+                            MessageToast.show(msg);
+                        })
+                        .catch(oError => {
+                            MessageToast.show(`${this.getTextFor("failedToCreateNewItem")}: ${oError}`);
+                        })
+                        .finally(() => {
+                            let oEmptyModel = new JSONModel(this._oCreationData);
+                            this.getView().setModel(oEmptyModel, this.constants.paths.creationModel);
+                            this.cleanCreationPopup();
+                            this.byId(this.constants.ids.creationPopUpDialog).close();
+                        })
+                } else {
+                    msg = oValidator.message;
+                    MessageToast.show(msg);
+                }
+            },
+
+            /**
              * Handle cancel creation
              */
             handleCreationPopUpCancel: function () {
+                this.cleanCreationPopup();
+                this.byId(this.constants.ids.creationPopUpDialog).close();
+            },
+
+            /**
+             * Allows the cleaning for the fields of the creation popup
+             */
+            cleanCreationPopup: function () {
                 let inpClave1 = this.getView().byId(this.constants.ids.input),
                     inpClave2 = this.getView().byId(this.constants.ids.textArea),
                     inpClave3 = this.getView().byId(this.constants.ids.slType),
                     oEmptyModel = new JSONModel(this._oCreationData);
+                this.getView().setModel(oEmptyModel, this.constants.paths.creationModel);
                 inpClave1.setValue("");
                 inpClave2.setValue("");
                 inpClave3.setSelectedKey(null);
                 inpClave1.setValueState("None");
                 inpClave2.setValueState("None");
                 inpClave3.setValueState("None");
-                this.getView().setModel(oEmptyModel, this.constants.paths.creationModel);
-                this.byId(this.constants.ids.creationPopUpDialog).close();
             },
 
             /**
