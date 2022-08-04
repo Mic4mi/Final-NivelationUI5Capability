@@ -6,4 +6,8 @@ describe("Detail journey: ", () => {
         await Detail.open()
     })
 
+    //should have a test that verifies that we can edit an item
+    //should have a test that verifies that we can delete an item
+    //should have a test that verifies that we can close the detail page
+
 })
