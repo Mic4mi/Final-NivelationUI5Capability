@@ -1,8 +1,8 @@
 const { wdi5 } = require("wdio-ui5-service")
 const Master = require("./pageObjects/Master")
+const { getListItemTexts } = require("./utils/Helper")
 
-describe("The master page: ", () => {
-
+describe("The master page: ", async () => {
     const oListSelector = {
         selector: {
             interaction: "root",
@@ -91,54 +91,63 @@ describe("The master page: ", () => {
         await Master.open()
     })
 
-    it("should have the right title", async () => {
-        const sTitle = await browser.getTitle()
-        expect(sTitle).toEqual("To-Do List!")
-    })
+    // it("should have the right title", async () => {
+    //     const sTitle = await browser.getTitle()
+    //     expect(sTitle).toEqual("To-Do List!")
+    // })
 
-    //should have a test that verifies that the list has items
-    it("should have a list with at least 3 items", async () => {
-        const oList = await browser.asControl(oListSelector);
-        const aListItems = await oList.getItems(true);
-        expect(aListItems.length).toBeGreaterThanOrEqual(3)
-    })
+    // //should have a test that verifies that the list has items
+    // it("should have a list with at least 3 items", async () => {
+    //     const oList = await browser.asControl(oListSelector);
+    //     const aListItems = await oList.getItems(true);
+    //     expect(aListItems.length).toBeGreaterThanOrEqual(3)
+    // })
 
-    //should have a test that verifies that the list can be filtered
-    it("should have a searchfield that filters the list", async () => {
-        const oSearchfield = await browser.asControl(oSearchFieldSelector);
-        await oSearchfield.setValue('agua');
-        await oSearchfield.fireLiveChange();
+    // //should have a test that verifies that the list can be filtered
+    // it("should have a searchfield that filters the list", async () => {
+    //     const oSearchfield = await browser.asControl(oSearchFieldSelector);
+    //     await oSearchfield.setValue('agua');
+    //     await oSearchfield.fireLiveChange();
 
-        const oList = await browser.asControl(oListSelector);
-        const aListItems = await oList.getItems(true);
-        expect(aListItems.length).toBe(1);
+    //     const oList = await browser.asControl(oListSelector);
+    //     const aListItems = await oList.getItems(true);
+    //     expect(aListItems.length).toBe(1);
 
-        await oSearchfield.setValue('');
-        await oSearchfield.fireLiveChange();
-    })
+    //     await oSearchfield.setValue('');
+    //     await oSearchfield.fireLiveChange();
+    // })
 
     //should have a test that verifies that the list can be sorted
     //TO-DO verify that the lis has been filtered!
-    it("should have a dialog that allows list sorting", async () => {
-        //first we get the button a press it
+
+    it("should have a sort dialog that allows list sorting", async () => {
+        // This test could be optimized, for sure. It's just a first approach. 
+        // to-do verify that the list is sorted and... maybe split this test in two? 
+        const oListBefore = await browser.asControl(oListSelector);
+        const aListItemsBefore = await oListBefore.getItems();
+        // first we get the initial items order
+        const aItemTextsBefore = await getListItemTexts(aListItemsBefore);
+        console.log("LIST BEFORE!!!!:    ", aItemTextsBefore);
+        // second we get the button a press it
         const oButton = await browser.asControl(oSortButtonSelector);
         await oButton.press();
-        //second, we search the dialog
+        //third, we search the dialog
         const oSortDialog = await browser.asControl(oSortDialogSelector);
-
-        //third, we fire sort event
+        //quarter, we fire sort event
         const oDialogButtons = await oSortDialog.getButtons();
         const oOkButton = oDialogButtons[0];
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA ", oOkButton);
         await oOkButton.firePress()
-        //quartr, we verify the if the list has been sorted
-        const oList = await browser.asControl(oListSelector);
-        const aListItems = await oList.getItems();
-        console.log("ITEM!!!!:    ", aListItems[0]);
+        //fifth, we verify the if the list has been sorted
+        const oListAfter = await browser.asControl(oListSelector);
+        const aListItemsAfter = await oListAfter.getItems();
+        const aItemTextsAfter = await getListItemTexts(aListItemsAfter);
+        console.log("LIST AFTER!!!!:    ", aItemTextsAfter);
+        //sixth, we compare the two list to see if the second one is sorted. 
     })
 
     //should have a test that verifies that we can add a new task
     //should have a test that verifies that we can check an item of the list and change it's state
     //should have a test that verifies that we can navigate to detail
+
 
 })

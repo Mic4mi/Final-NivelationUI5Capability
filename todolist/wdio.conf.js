@@ -7,6 +7,10 @@ exports.config = {
         skipInjectUI5OnStart: false, // [optional] {boolean}, default: false; true when UI5 is not on the start page, you need to later call <wdioUI5service>.injectUI5() manually
         waitForUI5Timeout: 40000 // [optional] {number}, default: 15000; maximum waiting time in milliseconds while checking for UI5 availability
     },
+
+    featureFlags: {
+        specFiltering: true
+    },
     //
     // ====================
     // Runner Configuration
@@ -118,7 +122,7 @@ exports.config = {
     connectionRetryTimeout: 120000,
     //
     // Default request retries count
-    connectionRetryCount: 3,
+    connectionRetryCount: 5,
     //
     // Test runner services
     // Services take over a specific job you don't want to take care of. They enhance
@@ -154,10 +158,20 @@ exports.config = {
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
+        /**
+         * all the files that interacts with `browser` object in a root scope
+         * have to be required in `before` hook if `specFiltering` feature is enabled.
+         */
         ui: 'bdd',
-        timeout: 80000
+        timeout: 90000,
+        require: [
+            "@babel/register"// remove from here
+        ]
     },
-    //
+
+    before(capabilities, specs) {
+        require("./src/wdio/commands") // add here
+    },    //
     // =====
     // Hooks
     // =====
