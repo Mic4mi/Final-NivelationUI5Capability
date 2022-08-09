@@ -1,4 +1,4 @@
-export const getListItemTexts = async (aListItems) => {
+export const getListItemTitleTexts = async (aListItems) => {
     let aTexts = [];
     for (const item of aListItems) {
         const oItemContent = await item.getAggregation("content");
@@ -13,4 +13,11 @@ export const getListItemTexts = async (aListItems) => {
         }
     }
     return aTexts;
+}
+
+export const checkAscendingOrder = async (arr) => {
+    if (arr[0][0] <= arr[1][0] && arr[1][0] <= arr[2][0]) {
+        return true;
+    }
+    return false;
 }

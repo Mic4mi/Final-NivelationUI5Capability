@@ -67,8 +67,8 @@
                 <f:footer>
                         <OverflowToolbar>
                                 <ToolbarSpacer/>
-                                <Button text="{i18n>CreationFooterSubmit}" type="Emphasized"  press="handleCreation" />
-                                <Button	text="{i18n>CreationFooterCancel}" type="Transparent" press="handleCreationPopUpCancel"/>
+                                <Button text="{i18n>CreationFooterSubmit}" id="createBtn" type="Emphasized"  press="handleCreation" />
+                                <Button	text="{i18n>CreationFooterCancel}" id="cancelCreateBtn" type="Transparent" press="handleCreationPopUpCancel"/>
                         </OverflowToolbar>
                 </f:footer>
         </f:DynamicPage>

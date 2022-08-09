@@ -130,6 +130,7 @@ sap.ui.define([
                     sMessage = this.getTextFor("doYouWishToAddANewItem");
                 MessageBox[sMessageBoxType](sMessage, {
                     actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+                    id: "confirmationPopup",
                     onClose: function (oAction) {
                         if (oAction === MessageBox.Action.YES) {
                             this.addNewItem();
