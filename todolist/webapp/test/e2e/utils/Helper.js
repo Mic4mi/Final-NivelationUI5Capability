@@ -21,3 +21,20 @@ export const checkAscendingOrder = async (arr) => {
     }
     return false;
 }
+
+export const getFirstUncompletedCheckbox = async (arrOfCheckBoxes) => {
+    // must return an object containing: the item, its status and its domId
+    let bState, oItem, sItemDomId;
+    for (let index = 0; index < arrOfCheckBoxes.length; index++) {
+        oItem = arrOfCheckBoxes[index];
+        bState = await oItem.getSelected();
+        sItemDomId = oItem._domId;
+        if (!bState) { break }
+    }
+
+    return {
+        item: oItem,
+        status: bState,
+        domId: sItemDomId
+    }
+}

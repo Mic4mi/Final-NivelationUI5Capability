@@ -1,6 +1,6 @@
 const { wdi5 } = require("wdio-ui5-service")
 const Master = require("./pageObjects/Master")
-const { getListItemTitleTexts, checkAscendingOrder } = require("./utils/Helper")
+const { getListItemTitleTexts, checkAscendingOrder, getFirstUncompletedCheckbox } = require("./utils/Helper")
 
 describe("The master page: ", async () => {
     const oListSelector = {
@@ -42,24 +42,6 @@ describe("The master page: ", async () => {
         }
     }
 
-    const oSortDialogSelector = {
-        selector: {
-            interaction: "root",
-            controlType: "sap.m.ViewSettingsDialog",
-            // id: "sortDialog",
-            viewName: Master._viewName
-        }
-    }
-
-    const oConfirmationDialogSelector = {
-        selector: {
-            interaction: "root",
-            id: "confirmationPopup",
-            // controlType: "sap.m.Dialog",
-            searchOpenDialogs: true
-        }
-    }
-
     const oConfirmButtonSelector = {
         selector: {
             controlType: "sap.m.Button",
@@ -67,6 +49,15 @@ describe("The master page: ", async () => {
                 text: "Yes"
             },
             searchOpenDialogs: true
+        }
+    }
+
+    const oSortDialogSelector = {
+        selector: {
+            interaction: "root",
+            controlType: "sap.m.ViewSettingsDialog",
+            // id: "sortDialog",
+            viewName: Master._viewName
         }
     }
 
@@ -127,6 +118,20 @@ describe("The master page: ", async () => {
         }
     }
 
+    const oItemToNavigateSelector = {
+        selector: {
+            viewName: Master._viewName,
+            controlType: "sap.m.CustomListItem"
+        }
+    }
+
+    const oCheckBoxSelector = {
+        selector: {
+            controlType: "sap.m.CheckBox",
+            viewName: Master._viewName
+        }
+    }
+
     before(async () => {
         await Master.open()
     })
@@ -136,14 +141,12 @@ describe("The master page: ", async () => {
         expect(sTitle).toEqual("To-Do List!")
     })
 
-    //should have a test that verifies that the list has items
     it("should have a list with at least 3 items", async () => {
         const oList = await browser.asControl(oListSelector);
         const aListItems = await oList.getItems(true);
         expect(aListItems.length).toBeGreaterThanOrEqual(3)
     })
 
-    //should have a test that verifies that the list can be filtered
     it("should have a searchfield that filters the list", async () => {
         const oSearchfield = await browser.asControl(oSearchFieldSelector);
         await oSearchfield.setValue('agua');
@@ -173,7 +176,6 @@ describe("The master page: ", async () => {
         expect(bIsTheListSortedInAscendingOrder).toBeTruthy();
     })
 
-    //should have a test that verifies that we can add a new task
     it("should have a dialog to add a new task", async () => {
         const oButton = await browser.asControl(oAddButtonSelector);
         await oButton.press();
@@ -205,7 +207,27 @@ describe("The master page: ", async () => {
         expect(sNewItemDomId).toBeTruthy();
     })
 
-    //should have a test that verifies that we can check an item of the list and change it's state
-    //should have a test that verifies that we can navigate to detail
+    it("should allow the status of a task to be modified", async () => {
+        // We bring all checkboxes
+        const aCheckBoxes = await browser.allControls(oCheckBoxSelector);
+        // We choose the first one that has not been completed yet
+        const oItem = await getFirstUncompletedCheckbox(aCheckBoxes);
+        // We change its status
+        await oItem.item.setSelected(true);
+        await oItem.item.fireSelect();
+        // We check if the item status has been changed
+        const oCompletdItem = await aCheckBoxes.find(async (item) => {
+            return item._domId === oItem.domId;
+        })
+        const bIsCompleted = await oCompletdItem.getSelected();
+        expect(bIsCompleted).toBeTruthy();
+    })
 
+    it("should be allowed to navigate to a detailed view", async () => {
+        const aItems = await browser.allControls(oItemToNavigateSelector)
+        await aItems[0].firePress()
+        const sUrl = await browser.getUrl()
+        const bNavigationOcurred = sUrl.includes('412790bd-390a-4626-ae32-ef3e7e3ccd0a');
+        expect(bNavigationOcurred).toBeTruthy();
+    })
 })
