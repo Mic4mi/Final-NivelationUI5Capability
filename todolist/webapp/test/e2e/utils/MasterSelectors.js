@@ -1,4 +1,4 @@
-export const Selector = async (sViewName) => {
+export const MasterSelector = async (sViewName) => {
     return {
         oListSelector: {
             selector: {
@@ -126,6 +126,16 @@ export const Selector = async (sViewName) => {
             selector: {
                 controlType: "sap.m.CheckBox",
                 viewName: sViewName
+            }
+        },
+
+        oExampleDeletdItemSelector :{
+            selector: {
+                controlType: "sap.m.Title",
+                viewName: sViewName,
+                properties: {
+                    text: 'Edited with wdio!'
+                }
             }
         }
     }

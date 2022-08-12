@@ -32,8 +32,12 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
+    // specs: [
+    //     './webapp/test/e2e/*.test.js'
+    // ],
     specs: [
-        './webapp/test/e2e/*.test.js'
+        './webapp/test/e2e/MasterJourney.test.js',
+        './webapp/test/e2e/DetailJourney.test.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -62,6 +66,7 @@ exports.config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
+
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
@@ -79,9 +84,8 @@ exports.config = {
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
-        // excludeDriverLogs: ['bugreport', 'server'],    
-    }],
-    //
+        // excludeDriverLogs: ['bugreport', 'server'],
+    }],    //
     // ===================
     // Test Configurations
     // ===================
@@ -163,7 +167,7 @@ exports.config = {
          * have to be required in `before` hook if `specFiltering` feature is enabled.
          */
         ui: 'bdd',
-        timeout: 90000,
+        timeout: 900000,
         require: [
             "@babel/register"// remove from here
         ]

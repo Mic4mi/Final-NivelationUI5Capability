@@ -15,17 +15,22 @@ export const getListItemTitleTexts = async (aListItems) => {
     return aTexts;
 }
 
-export const checkAscendingOrder = async (arr) => {
-    if (arr[0][0] <= arr[1][0] && arr[1][0] <= arr[2][0]) {
-        return true;
+export const getSortDirection = async (arr) => {
+    const c = [];
+    for (let i = 1; i < arr.length; i++) {
+        c.push(arr[i - 1].localeCompare(arr[i]));
     }
-    return false;
+
+    if (c.every((n) => n <= 0)) return 'ascending';
+    if (c.every((n) => n >= 0)) return 'descending';
+
+    return 'unsorted';
 }
 
-export const getFirstUncompletedCheckbox = async (arrOfCheckBoxes) => {
+export const getLastUncompletedCheckbox = async (arrOfCheckBoxes) => {
     // must return an object containing: the item, its status and its domId
     let bState, oItem, sItemDomId;
-    for (let index = 0; index < arrOfCheckBoxes.length; index++) {
+    for (let index = arrOfCheckBoxes.length - 1; index >= 0; index--) {
         oItem = arrOfCheckBoxes[index];
         bState = await oItem.getSelected();
         sItemDomId = oItem._domId;
@@ -37,4 +42,9 @@ export const getFirstUncompletedCheckbox = async (arrOfCheckBoxes) => {
         status: bState,
         domId: sItemDomId
     }
+}
+
+export const verifyNavigation = async (sMustIncludes) => {
+    const sUrl = await browser.getUrl()
+    return sUrl.includes(sMustIncludes);
 }
