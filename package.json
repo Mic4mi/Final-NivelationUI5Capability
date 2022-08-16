@@ -7,7 +7,7 @@
         "build": "rimraf resources mta_archives && mbt build --mtar archive",
         "deploy": "cf deploy mta_archives/archive.mtar",
         "undeploy": "cf undeploy todoListRoot --delete-services --delete-service-keys",
-        "wdio": "wdio run wdio.conf.js"
+        "wdio": "wdio run ./todolist/wdio.conf.js"
     },
     "devDependencies": {
         "rimraf": "3.0.0",
