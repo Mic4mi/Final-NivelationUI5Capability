@@ -1,0 +1,27 @@
+name: run wdi5 tests
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16]
+
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v3
+
+      - name: setup chrome
+        uses: browser-actions/setup-chrome@v0.0.0
+
+      - name: use node ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: install packages
+        run: npm install
+
+      - name: run wdi5 tests
+        run: npm run wdio
