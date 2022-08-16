@@ -226,7 +226,6 @@ sap.ui.define([
                     oTable = this.byId(this.constants.ids.masterList),
                     oBinding = oTable.getBinding("items"),
                     oSearchFilter;
-
                 if (sQuery) {
                     oSearchFilter = new Filter([
                         new Filter(this.constants.filterFields.title, FilterOperator.Contains, sQuery),
@@ -263,6 +262,5 @@ sap.ui.define([
                 oSorter = new Sorter(sPath, bDescending);
                 oBinding.sort(oSorter);
             }
-
         });
     });
