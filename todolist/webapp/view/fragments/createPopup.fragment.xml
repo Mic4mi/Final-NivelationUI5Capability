@@ -31,23 +31,25 @@
                         columnsXL="1"
                         singleContainerFullSize="false"  >
 
-                        <Label id="lbInput" labelFor="input" required="false" text="{i18n>titleItem}"/>
+                        <Label id="lbInput" labelFor="input" required="true" text="{i18n>titleItem}"/>
                         <Input 
                             id="input" 
                             value="{CreationModel>/title}"
                             width="17rem"
-                            maxLength="30"/>
+                            maxLength="30"
+                            change=".validator.validateRequiredInput"/>
                                     
-                        <Label id="lbTextArea" labelFor="textArea" required="false" text="{i18n>text}"/>
+                        <Label id="lbTextArea" labelFor="textArea" required="true" text="{i18n>text}"/>
                         <TextArea 
                             id="textArea" 
                             width="17rem" 
                             value="{CreationModel>/text}" 
                             showExceededText="true" 
                             rows="5"
-                            maxLength="120"/>
+                            maxLength="120"
+                            change=".validator.validateRequiredTextArea"/>
                         
-                        <Label id="lbType" labelFor="slType" required="false" text="{i18n>type}"/>
+                        <Label id="lbType" labelFor="slType" required="true" text="{i18n>type}"/>
                         <ComboBox
                             id="slType"
                             showSecondaryValues="true"
@@ -55,7 +57,8 @@
                             selectedKey="{CreationModel>/type_ID}"
                             items="{
                                 path: 'ListOfNotesModel>/Types'
-                            }">
+                            }"
+                            change=".validator.validateComboboxInput">
                             <core:ListItem key="{ListOfNotesModel>ID}" text="{ListOfNotesModel>description} - {ListOfNotesModel>ID}"/>
                         </ComboBox>                  
 
@@ -64,8 +67,8 @@
                 <f:footer>
                         <OverflowToolbar>
                                 <ToolbarSpacer/>
-                                <Button text="{i18n>CreationFooterSubmit}" type="Emphasized"  press="handleCreationPopUpSubmit" />
-                                <Button	text="{i18n>CreationFooterCancel}" type="Transparent" press="handleCreationPopUpCancel"/>
+                                <Button text="{i18n>CreationFooterSubmit}" id="createBtn" type="Emphasized"  press="handleCreation" />
+                                <Button	text="{i18n>CreationFooterCancel}" id="cancelCreateBtn" type="Transparent" press="handleCreationPopUpCancel"/>
                         </OverflowToolbar>
                 </f:footer>
         </f:DynamicPage>

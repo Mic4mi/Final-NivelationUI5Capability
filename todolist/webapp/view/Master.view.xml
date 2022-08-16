@@ -38,7 +38,7 @@
                                 showSearchButton="false" 
                                 showRefreshButton="false" 
                                 placeholder="{i18n>search}" 
-                                search="onSearch" 
+                                liveChange="onSearch" 
                                 width="auto"
                                 class="sapUiSmallMarginBegin">
                                 <layoutData>
@@ -53,9 +53,16 @@
                     <items>
                         <CustomListItem type="Navigation" press="onSelectionChange">
                             <HBox>
-                                <CheckBox press="onHandleCheck" class="sapUiTinyMarginTop sapUiSmallMarginBegin"/>                            
+                                <CheckBox select="onHandleCheck" selected="{ListOfNotesModel>completed}" class="sapUiTinyMarginTop sapUiSmallMarginBegin"/>                            
                                 <VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-                                    <Title text="{path: 'ListOfNotesModel>title'}" titleStyle="H3"/>
+                                    <HBox alignItems="Center">
+                                        <Title text="{path: 'ListOfNotesModel>title'}" titleStyle="H3"/>
+                                        <ObjectStatus
+                                            class="sapUiSmallMarginBegin sapUiTinyMarginTop  sapUiTinyMarginBottom"
+                                            text="{path: 'ListOfNotesModel>type_ID', formatter: '.formatter.formatTypeText'}"
+                                            icon="{path: 'ListOfNotesModel>type_ID', formatter: '.formatter.formatTypeIcon'}"
+                                            state="{path: 'ListOfNotesModel>type_ID', formatter: '.formatter.formatTypeState'}"/>
+                                    </HBox>
                                     <ObjectStatus
                                         class="sapUiSmallMarginTop sapUiTinyMarginBottom"
                                         text="{
