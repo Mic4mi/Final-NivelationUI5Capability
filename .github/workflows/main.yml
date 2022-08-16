@@ -37,4 +37,4 @@ jobs:
         run: npm install
 
       - name: run wdi5 tests
-        run: wdio run wdio.conf.js
+        run: npx wdio run wdio.conf.js
