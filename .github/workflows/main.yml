@@ -40,4 +40,4 @@ jobs:
         run: npm i @wdio/cli -g
 
       - name: run wdi5 tests
-        run: wdio run wdio.conf.js
+        run: npm run wdio 
