@@ -110,7 +110,7 @@ export const MasterSelector = async (sViewName) => {
                 controlType: "sap.m.Title",
                 viewName: sViewName,
                 properties: {
-                    text: 'This is a test title'
+                    text: 'An item generated with wdio!'
                 }
             }
         },

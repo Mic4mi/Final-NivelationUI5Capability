@@ -1,28 +1,16 @@
 const { wdi5 } = require("wdio-ui5-service")
 const Master = require("./pageObjects/Master")
 const Detail = require("./pageObjects/Detail")
-const { verifyNavigation } = require("./utils/Helper")
+const { pressItemToNavToDetail } = require("./utils/Helper")
 const { MasterSelector } = require("./utils/MasterSelectors")
 const { DetailSelector } = require("./utils/DetailSelectors")
 let oMasterSelector;
 let oDetailSelector;
 
-describe("Detail journey: ", () => {
+describe("The Detail Page: ", () => {
     before(async () => {
-        await Master.open()
-        await Detail.open()
         oMasterSelector = await MasterSelector(Master._viewName);
         oDetailSelector = await DetailSelector(Detail._viewName);
-    })
-
-    it("should be allowed to navigate to a detailed view", async () => {
-        const aItems = await browser.allControls(oMasterSelector.oItemToNavigateSelector)
-        await aItems[0].firePress()
-        // WARNING: This will vary depending on how the data comes from the backend, 
-        // maybe it could be replaced by an id but, in this case, for practicality 
-        // reasons we only validate a static value
-        const bNavigationOcurred = await verifyNavigation('Notes(guid');
-        expect(bNavigationOcurred).toBeTruthy();
     })
 
     // should have a test that verifies that we can edit an item    
@@ -54,28 +42,6 @@ describe("Detail journey: ", () => {
         // TODO - Verify that the item has been edited
         const oNewTitle = await browser.asControl(oDetailSelector.oNewEditedTitle);
         expect(oNewTitle._domId).toBeTruthy();
-    })
-
-    // should have a test that verifies that we can delete an item
-    it("should allow deletion", async () => {
-        const oDeleteBtn = await browser.asControl(oDetailSelector.oDeleteBtnSelector);
-        await oDeleteBtn.press();
-        const oConfirmButton = await browser.asControl({
-            selector: {
-                viewName: Detail._viewName,
-                controlType: "sap.m.Button",
-                properties: {
-                    text: "Yes"
-                },
-                searchOpenDialogs: true
-
-            }
-        });
-        await oConfirmButton.press();
-        // TODO - Verify that the item does not exists anymore
-        const oDeletedItemTitle = await browser.asControl(oMasterSelector.oExampleDeletdItemSelector);
-        const sNewItemDomId = oDeletedItemTitle._domId;
-        expect(sNewItemDomId).toBeFalsy();
     })
 
 })

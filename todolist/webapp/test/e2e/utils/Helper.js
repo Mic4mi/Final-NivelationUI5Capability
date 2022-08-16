@@ -48,3 +48,9 @@ export const verifyNavigation = async (sMustIncludes) => {
     const sUrl = await browser.getUrl()
     return sUrl.includes(sMustIncludes);
 }
+
+export const pressItemToNavToDetail = async (aItems) => {
+    // const aItems = await browser.allControls(oMasterSelector.oItemToNavigateSelector);
+    const oListItem = aItems[0];
+    await oListItem.firePress()
+}

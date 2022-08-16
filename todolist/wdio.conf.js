@@ -32,13 +32,27 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
+    specs: [
+        [
+            "./webapp/test/e2e/CheckMasterView.test.js",
+            "./webapp/test/e2e/AddNewTask.test.js",
+            "./webapp/test/e2e/SortList.test.js",
+            "./webapp/test/e2e/FilterList.test.js",
+            "./webapp/test/e2e/ChangeItemStatus.test.js"
+        ],
+        [
+            "./webapp/test/e2e/NavigateToDetail.test.js",
+            "./webapp/test/e2e/EditAnItem.test.js",
+            "./webapp/test/e2e/DeleteAnItem.test.js"
+        ],
+    ],
     // specs: [
     //     './webapp/test/e2e/*.test.js'
     // ],
-    specs: [
-        './webapp/test/e2e/MasterJourney.test.js',
-        './webapp/test/e2e/DetailJourney.test.js'
-    ],
+    // specs: [
+    //     './webapp/test/e2e/MasterJourney.test.js',
+    //     './webapp/test/e2e/DetailJourney.test.js'
+    // ],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
