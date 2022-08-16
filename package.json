@@ -6,10 +6,37 @@
         "clean": "rimraf resources mta_archives mta-op*",
         "build": "rimraf resources mta_archives && mbt build --mtar archive",
         "deploy": "cf deploy mta_archives/archive.mtar",
-        "undeploy": "cf undeploy todoListRoot --delete-services --delete-service-keys"
+        "undeploy": "cf undeploy todoListRoot --delete-services --delete-service-keys",
+        "wdio": "wdio run wdio.conf.js"
     },
     "devDependencies": {
+        "rimraf": "3.0.0",
+        "@babel/core": "^7.18.10",
+        "@babel/preset-env": "^7.18.10",
+        "@babel/register": "^7.18.9",
+        "@sap/ui5-builder-webide-extension": "^1.1.7",
+        "@sap/ux-ui5-fe-mockserver-middleware": "1",
+        "@sap/ux-ui5-tooling": "1",
+        "@ui5/cli": "^2.14.1",
+        "@wdio/cli": "^7.20.9",
+        "@wdio/firefox-profile-service": "^7.20.7",
+        "@wdio/local-runner": "^7.20.9",
+        "@wdio/mocha-framework": "^7.20.7",
+        "@wdio/spec-reporter": "^7.20.8",
+        "chromedriver": "^103.0.0",
         "mbt": "^1.0.15",
-        "rimraf": "3.0.0"
+        "ui5-task-zipper": "^0.3.1",
+        "wdio-chromedriver-service": "^7.3.2",
+        "wdio-ui5-service": "^0.9.10",
+        "wdio-wait-for": "^2.2.6"
+    },
+    "ui5": {
+        "dependencies": [
+            "@sap/ux-ui5-tooling",
+            "@sap/ux-ui5-fe-mockserver-middleware",
+            "@sap/ui5-builder-webide-extension",
+            "ui5-task-zipper",
+            "mbt"
+        ]
     }
 }
