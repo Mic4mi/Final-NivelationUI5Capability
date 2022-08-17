@@ -38,6 +38,9 @@ jobs:
         
       - name: install wdio cli
         run: npm i @wdio/cli -g
+        
+      - name: start project
+        run: npm start 
 
       - name: run wdi5 tests
         run: npm run wdio 
